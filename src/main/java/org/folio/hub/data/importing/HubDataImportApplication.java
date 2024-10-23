@@ -1,10 +1,10 @@
-package org.folio.hub.data_import;
+package org.folio.hub.data.importing;
+
+import static org.springframework.context.annotation.FilterType.REGEX;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
-
-import static org.springframework.context.annotation.FilterType.REGEX;
 
 @SpringBootApplication
 @ComponentScan(value = "org.folio", excludeFilters = @ComponentScan.Filter(type = REGEX, pattern =
