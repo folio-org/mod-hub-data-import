@@ -1,16 +1,16 @@
-package org.folio.hub.data_import;
+package org.folio.hub.data.importing;
+
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.folio.spring.testing.extension.EnablePostgres;
 import org.folio.spring.testing.type.IntegrationTest;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
 @EnablePostgres
 @IntegrationTest
 @SpringBootTest
-public class ApplicationTest {
+public class ApplicationIT {
 
   @Test
   void testApplicationIsUp() {

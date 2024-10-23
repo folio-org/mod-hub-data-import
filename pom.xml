@@ -28,7 +28,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <sonar.exclusions>
-      src/main/java/org/folio/hub/data/import/HubDataImportApplication.java
+      src/main/java/org/folio/hub/data/importing/HubDataImportApplication.java
     </sonar.exclusions>
 
     <!-- Dependencies versions -->
@@ -44,7 +44,7 @@
     <testcontainers.version>1.20.2</testcontainers.version>
     <wiremock.version>2.27.2</wiremock.version>
     <jsonassert.version>1.5.3</jsonassert.version>
-    <folio-service-tools.version>4.1.0-SNAPSHOT</folio-service-tools.version>
+    <folio-service-tools.version>4.1.0</folio-service-tools.version>
     <easy-random.version>5.0.0</easy-random.version>
 
     <!-- Plugins versions -->
@@ -59,6 +59,8 @@
     <maven-failsafe-plugin.version>3.5.1</maven-failsafe-plugin.version>
     <maven-release-plugin.version>3.1.1</maven-release-plugin.version>
     <folio-module-descriptor-validator.version>1.0.0</folio-module-descriptor-validator.version>
+
+    <swagger.yaml.file>${project.basedir}/src/main/resources/swagger.api/mod-hub-data-import.yaml</swagger.yaml.file>
   </properties>
 
   <dependencies>
@@ -290,10 +292,10 @@
                   <sourceFile>${project.build.directory}/DeploymentDescriptor-template.json</sourceFile>
                   <destinationFile>${project.build.directory}/DeploymentDescriptor.json</destinationFile>
                 </fileSet>
-                <fileSet>
+                <!--<fileSet>
                   <sourceFile>${project.build.directory}/docs/mod-hub-data-import/index.html</sourceFile>
                   <destinationFile>${project.build.directory}/apidocs/mod-hub-data-import.html</destinationFile>
-                </fileSet>
+                </fileSet>-->
               </fileSets>
             </configuration>
           </execution>
@@ -434,6 +436,47 @@
             <goals>
               <goal>validate</goal>
             </goals>
+          </execution>
+        </executions>
+      </plugin>
+
+      <plugin>
+        <groupId>org.openapitools</groupId>
+        <artifactId>openapi-generator-maven-plugin</artifactId>
+        <version>${maven-openapi-generator-plugin.version}</version>
+        <executions>
+          <execution>
+            <id>mod-hub-data-import-openapi</id>
+            <goals>
+              <goal>generate</goal>
+            </goals>
+            <configuration>
+              <inputSpec>${swagger.yaml.file}</inputSpec>
+              <output>${project.build.directory}/generated-sources</output>
+              <generatorName>spring</generatorName>
+              <modelPackage>${project.groupId}.hub.data.importing.domain.dto</modelPackage>
+              <apiPackage>${project.groupId}.hub.data.importing.rest.resource</apiPackage>
+              <generateApis>true</generateApis>
+              <generateApiTests>true</generateApiTests>
+              <generateApiDocumentation>true</generateApiDocumentation>
+              <generateModels>true</generateModels>
+              <generateModelTests>false</generateModelTests>
+              <generateSupportingFiles>true</generateSupportingFiles>
+              <supportingFilesToGenerate>ApiUtil.java</supportingFilesToGenerate>
+              <generateModelDocumentation>true</generateModelDocumentation>
+              <templateDirectory>${project.basedir}/src/main/resources/swagger.api/templates</templateDirectory>
+              <configOptions>
+                <java8>true</java8>
+                <dateLibrary>java</dateLibrary>
+                <interfaceOnly>true</interfaceOnly>
+                <useSpringBoot3>true</useSpringBoot3>
+                <requestMappingMode>api_interface</requestMappingMode>
+                <renameModelProperties>true</renameModelProperties>
+                <additionalProperties>
+                  <modelPropertyNaming>original</modelPropertyNaming>
+                </additionalProperties>
+              </configOptions>
+            </configuration>
           </execution>
         </executions>
       </plugin>
