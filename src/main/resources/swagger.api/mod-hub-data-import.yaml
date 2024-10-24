@@ -1,0 +1,7 @@
+openapi: 3.0.0
+info:
+  title: Hub Data Import API
+  version: v1
+  description: Hub Data Import service API
+
+paths: {}
